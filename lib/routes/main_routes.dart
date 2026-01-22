@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mood_note/pages/add/add_page.dart';
-import 'package:mood_note/pages/main/mian_page.dart';
+import 'package:mood_note/pages/main/main_page.dart';
 
 Widget getRootWidget() {
   return MaterialApp(

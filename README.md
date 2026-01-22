@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/images/logo.png" width="120" height="120" alt="Mood Note Logo">
+</p>
+
 # Mood Note 📝
 
 A clean, elegant, and privacy-focused personal diary application built with Flutter.

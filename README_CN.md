@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/images/logo.png" width="120" height="120" alt="Mood Note Logo">
+</p>
+
 # Mood Note 心情笔记 📝
 
 一款清新、优雅且注重隐私的个人日记应用，基于 Flutter 构建。

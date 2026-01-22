@@ -43,3 +43,32 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# --- 针对 Trae / VS Code 的补充 ---
+# 既然你使用的是由 VS Code 改的 Trae，建议取消 .vscode 的注释并排除部分缓存
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+# 排除 Trae/VS Code 的特定扩展缓存
+.history/
+
+# --- 针对 Android 端的补充 ---
+# 排除本地的 SDK 路径配置文件（每个人的路径不同，绝不能上传）
+android/local.properties
+android/key.properties
+*.keystore
+*.jks
+
+# --- 针对 Windows 端的补充 ---
+# 既然你在 Windows 11 上编译过 Windows 版本，这些是必须排除的
+/windows/flutter/ephemeral/
+/windows/runner/*.exe
+/windows/runner/*.dll
+/windows/runner/*.pdb
+
+# --- 针对 Flutter 3.x 补充 ---
+# 现在的 Flutter 版本会生成这些
+.flutter-plugins
+.flutter-plugins-dependencies
+.dart_tool/

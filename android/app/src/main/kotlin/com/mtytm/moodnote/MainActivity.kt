@@ -1,4 +1,4 @@
-package com.example.mood_note
+package com.mtytm.moodnote
 
 import io.flutter.embedding.android.FlutterActivity
 

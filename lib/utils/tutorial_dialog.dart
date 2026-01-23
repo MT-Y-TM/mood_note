@@ -89,28 +89,44 @@ class TutorialDialog {
             actions: [
               Row(
                 children: [
-                  TextButton(
-                    onPressed: currentIndex == 0
-                        ? null
-                        : () => pageController.previousPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
+                  //使用 AnimatedOpacity 实现平滑隐身
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    transitionBuilder:
+                        (Widget child, Animation<double> animation) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: ScaleTransition(
+                              scale: animation,
+                              child: child,
+                            ),
+                          );
+                        },
+                    // 当 index 为 0 时，展示一个空的 SizedBox，否则展示按钮
+                    child: currentIndex == 0
+                        ? const SizedBox.shrink(key: ValueKey('empty')) // 占位空组件
+                        : TextButton(
+                            key: const ValueKey(
+                              'prev_button',
+                            ), 
+                            onPressed: () => pageController.previousPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            ),
+                            child: Text(
+                              "上一页",
+                              style: TextStyle(color: colorScheme.primary),
+                            ),
                           ),
-                    child: Text(
-                      "上一页",
-                      style: TextStyle(
-                        color: currentIndex == 0
-                            ? colorScheme.outline
-                            : colorScheme.primary,
-                      ),
-                    ),
                   ),
                   const Spacer(),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      // 使用主题主色调
                       backgroundColor: colorScheme.primary,
                       foregroundColor: colorScheme.onPrimary,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                      ), // 保持内边距
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -122,11 +138,28 @@ class TutorialDialog {
                             duration: const Duration(milliseconds: 300),
                             curve: Curves.easeInOut,
                           ),
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 200),
-                      child: Text(
-                        isLastPage ? "开始使用" : "下一页",
-                        key: ValueKey<bool>(isLastPage),
+                    child: AnimatedSize(
+                      // 让按钮宽度随内容平滑伸缩
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        // 自定义过渡效果：不仅有淡入，还有缩放
+                        transitionBuilder:
+                            (Widget child, Animation<double> animation) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: ScaleTransition(
+                                  scale: animation, // 增加缩放动画
+                                  child: child,
+                                ),
+                              );
+                            },
+                        child: Text(
+                          isLastPage ? "开始使用" : "下一页",
+                          key: ValueKey<bool>(isLastPage),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
                   ),

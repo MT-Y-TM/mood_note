@@ -5,6 +5,7 @@ import 'package:mood_note/component/main_page/main_drawer.dart';
 import 'package:mood_note/component/main_page/search_bar_delegate.dart';
 import 'package:mood_note/utils/tutorial_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../providers/diary_provider.dart';
 import '../../component/main_page/weather_header.dart';
 import '../../component/main_page/diary_search_bar.dart';
@@ -29,9 +30,25 @@ class _MainPageState extends State<MainPage> {
       context.read<DiaryProvider>().updateWeatherByLocation();
 
       //检查是否第一次运行，如果是则弹出引导
-      TutorialDialog.show(context);
+      _checkFirstSeen();
     });
   }
+
+  Future<void> _checkFirstSeen() async {
+  final prefs = await SharedPreferences.getInstance();
+  // 读取标记位，如果没读到（null）说明是第一次，默认返回 true
+  bool isFirstTime = prefs.getBool('has_seen_tutorial') ?? true;
+
+  if (isFirstTime && mounted) {
+    // 弹出引导
+    TutorialDialog.show(context);
+    // 这里其实有两种策略：
+    // A. 只要弹出来就算看过（在这里直接 setBool）
+    // B. 用户点完“开始使用”才算看过（在 Dialog 里 setBool）
+    // 我们建议在这里先标记，确保即使 Dialog 异常关闭也不会导致死循环弹窗
+    await prefs.setBool('has_seen_tutorial', false);
+  }
+}
 
   void _onScroll() {
     if (_scrollController.offset > 300 && !_showBackToTop) {
